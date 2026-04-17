@@ -2,7 +2,12 @@ import os
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django.core.exceptions import ValidationError
-import magic
+
+try:
+    import magic
+    HAS_MAGIC = True
+except (ImportError, OSError):
+    HAS_MAGIC = False
 
 def get_encryption_key():
     key = getattr(settings, 'FIELD_ENCRYPTION_KEY', None)
@@ -41,12 +46,12 @@ def validate_image_file(file):
     if not ext.lower() in valid_extensions:
         raise ValidationError('Unsupported file extension.')
 
-    # Deep check MIME type using magic numbers
-    # We read the first 2048 bytes to determine the type
-    file_content = file.read(2048)
-    file.seek(0)
-    mime = magic.from_buffer(file_content, mime=True)
-    
-    valid_mime_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
-    if mime not in valid_mime_types:
-        raise ValidationError(f'Malicious file detected or invalid image format (%s)' % mime)
+    # Deep check MIME type using magic numbers (if available)
+    if HAS_MAGIC:
+        file_content = file.read(2048)
+        file.seek(0)
+        mime = magic.from_buffer(file_content, mime=True)
+        
+        valid_mime_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+        if mime not in valid_mime_types:
+            raise ValidationError(f'Malicious file detected or invalid image format (%s)' % mime)
