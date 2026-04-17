@@ -12,5 +12,5 @@ django-ratelimit
 whitenoise
 gunicorn
 cryptography
-python-magic-bin
+python-magic
 dj-database-url
