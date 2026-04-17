@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from datetime import timedelta
 from django.utils import timezone
+from apps.security_utils import validate_image_file, encrypt_data, decrypt_data
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -29,7 +30,7 @@ class Item(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
     date = models.DateField()
-    image = models.ImageField(upload_to='items/', blank=True, null=True)
+    image = models.ImageField(upload_to='items/', blank=True, null=True, validators=[validate_image_file])
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='items')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -50,7 +51,17 @@ class Resolution(models.Model):
     def save(self, *args, **kwargs):
         if not self.delete_after:
             self.delete_after = timezone.now() + timedelta(weeks=1)
+        
+        # Encrypt the contact info before saving if it's not already encrypted
+        # We check if it looks like an encrypted string (Fernet strings start with gAAAA)
+        if self.receiver_contact and not self.receiver_contact.startswith('gAAAA'):
+            self.receiver_contact = encrypt_data(self.receiver_contact)
+            
         super().save(*args, **kwargs)
+
+    @property
+    def decripted_contact(self):
+        return decrypt_data(self.receiver_contact)
 
     def __str__(self):
         return f"Resolution for {self.item.title}"

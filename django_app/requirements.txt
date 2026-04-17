@@ -11,3 +11,5 @@ django-redis
 django-ratelimit
 whitenoise
 gunicorn
+cryptography
+python-magic-bin
