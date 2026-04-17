@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign In – Lost & Found{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="glass-card auth-card">
+        <h1>Welcome Back</h1>
+        <p class="auth-subtitle">Sign in to manage your reports</p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% if login_form.non_field_errors %}
+            <div class="form-error-box">
+                {% for error in login_form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label>Username</label>
+                {% if login_form.username.errors %}
+                <div class="field-errors">{% for e in login_form.username.errors %}<p>{{ e }}</p>{% endfor %}</div>
+                {% endif %}
+                {{ login_form.username }}
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                {% if login_form.password.errors %}
+                <div class="field-errors">{% for e in login_form.password.errors %}<p>{{ e }}</p>{% endfor %}</div>
+                {% endif %}
+                {{ login_form.password }}
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full" style="margin-top: 0.75rem;">Sign In</button>
+        </form>
+        
+        <p class="form-footer">
+            Don't have an account? <a href="{% url 'accounts:register' %}">Register here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

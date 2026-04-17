@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} – Lost & Found{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="glass-card" style="width: 100%; max-width: 560px;">
+        <h1 style="text-align: center;">{{ title }}</h1>
+        <p class="auth-subtitle">Provide details to help the community find or return this item.</p>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {% if field.errors %}
+                <div class="field-errors">{% for e in field.errors %}<p>{{ e }}</p>{% endfor %}</div>
+                {% endif %}
+                {{ field }}
+            </div>
+            {% endfor %}
+            
+            <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 2;">Submit Report</button>
+                <a href="{% url 'items:index' %}" class="btn btn-outline" style="flex: 1;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
