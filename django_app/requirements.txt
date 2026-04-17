@@ -13,3 +13,4 @@ whitenoise
 gunicorn
 cryptography
 python-magic-bin
+dj-database-url
