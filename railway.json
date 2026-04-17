@@ -2,8 +2,8 @@
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "DOCKERFILE",
-    "dockerfilePath": "django_app/Dockerfile",
-    "context": "."
+    "dockerfilePath": "Dockerfile",
+    "root": "django_app"
   },
   "deploy": {
     "numReplicas": 1,
