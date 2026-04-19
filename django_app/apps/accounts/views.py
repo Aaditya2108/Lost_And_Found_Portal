@@ -84,3 +84,21 @@ def verify_email_view(request, uidb64, token):
     else:
         messages.error(request, "The verification link was invalid or has expired. Please try registering again.")
         return redirect('accounts:login')
+
+def test_email_view(request):
+    from django.http import HttpResponse
+    from django.core.mail import send_mail
+    import traceback
+    
+    try:
+        send_mail(
+            "Test Email from Lost & Found",
+            "If you can see this, your email configuration is working perfectly!",
+            None,
+            [settings.EMAIL_HOST_USER], # Send to yourself
+            fail_silently=False,
+        )
+        return HttpResponse("<h1>Email Sent Successfully!</h1><p>Check your inbox (and spam folder) for the test email.</p>")
+    except Exception as e:
+        error_details = traceback.format_exc()
+        return HttpResponse(f"<h1>Email Failed!</h1><p>Error: {str(e)}</p><pre>{error_details}</pre><p><b>Tip:</b> Make sure you are using an 'App Password' and that your HOST/PORT/USER are correct in Render Environment variables.</p>")

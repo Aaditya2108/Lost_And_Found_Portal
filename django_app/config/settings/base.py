@@ -199,6 +199,9 @@ if not DEBUG:
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Render Proxy Header for HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Email Configuration
 if os.environ.get('EMAIL_HOST'):
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
