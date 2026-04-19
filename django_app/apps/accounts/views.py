@@ -40,13 +40,20 @@ def register_view(request):
             
             subject = "Verify your Lost & Found Portal account"
             message = f"Hi {user.username},\n\nPlease click the link below to verify your email address and activate your account:\n\n{verification_link}\n\nThank you!"
-            send_mail(
-                subject,
-                message,
-                None, # Uses DEFAULT_FROM_EMAIL
-                [user.email],
-                fail_silently=False,
-            )
+            
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    None, # Uses DEFAULT_FROM_EMAIL
+                    [user.email],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                # Log the error to the console (will appear in Render logs)
+                print(f"EMAIL SENDING ERROR: {str(e)}")
+                # Notify the user that email failed, but account exists
+                messages.warning(request, "Your account was created, but we had trouble sending the verification email. Please contact the administrator or check your credentials.")
             
             return redirect('accounts:verification_sent')
         # form is invalid — fall through with errors attached
