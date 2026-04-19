@@ -23,6 +23,15 @@ class CustomUserCreationForm(UserCreationForm):
             raise ValidationError("A user with that email already exists.")
         return email
 
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if phone_number:
+            # Strip whitespace
+            phone_number = phone_number.strip()
+            if not phone_number.isdigit() or len(phone_number) != 10:
+                raise ValidationError("Phone number must contain exactly 10 digits.")
+        return phone_number
+
     class Meta(UserCreationForm.Meta):
         model = CustomUser
         fields = ('username', 'email', 'role', 'phone_number', 'department')
