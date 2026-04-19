@@ -1,3 +1,4 @@
+from django.urls import path
 from .views import login_view, logout_view, register_view, verify_email_view, verification_sent_view, temporary_setup_admin
 
 app_name = 'accounts'
