@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Verify Email – Lost & Found{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper" style="text-align: center; margin-top: 5rem;">
+    <div class="glass-card auth-card" style="max-width: 500px; display: inline-block;">
+        <h1 style="color: var(--primary-color);">Registration Successful!</h1>
+        <div style="margin: 2rem 0;">
+            <svg style="width: 80px; height: 80px; color: var(--primary-color);" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Please verify your email address</h3>
+        <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem;">
+            We've sent an activation link to your email inbox. You need to click that link to activate your account before you can log in.
+        </p>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">
+            Didn't receive it? Check your spam folder or try registering again.
+        </p>
+        <div style="margin-top: 2rem;">
+            <a href="{% url 'accounts:login' %}" class="btn btn-secondary">Go to Login Page</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

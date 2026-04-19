@@ -48,12 +48,14 @@ def register_view(request):
                 fail_silently=False,
             )
             
-            messages.success(request, "Registration successful. Please check your email to verify your account before logging in.")
-            return redirect('accounts:login')
+            return redirect('accounts:verification_sent')
         # form is invalid — fall through with errors attached
     else:
         form = CustomUserCreationForm()
     return render(request, 'accounts/register.html', {"register_form": form})
+
+def verification_sent_view(request):
+    return render(request, 'accounts/verification_sent.html')
 
 def logout_view(request):
     logout(request)
