@@ -9,7 +9,7 @@ class CustomUser(AbstractUser):
         ('ADMIN', 'Admin'),
     )
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='STUDENT')
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    phone_number = models.CharField(max_length=255, blank=True, null=True)
     department = models.CharField(max_length=100, blank=True, null=True)
     
     def save(self, *args, **kwargs):
