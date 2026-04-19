@@ -57,24 +57,6 @@ def register_view(request):
 def verification_sent_view(request):
     return render(request, 'accounts/verification_sent.html')
 
-def temporary_setup_admin(request):
-    from django.http import HttpResponse
-    try:
-        from .models import CustomUser
-        # Delete only non-admin users to effectively clear emails/passwords 
-        # (Though we can just wipe all users)
-        CustomUser.objects.all().delete()
-        
-        # Create fresh admin
-        CustomUser.objects.create_superuser(
-            username='admin',
-            email='admin@lostfound.local',
-            password='SecureAdminPassword123!'
-        )
-        return HttpResponse("<h1>SUCCESS!</h1><p>Database cleared! Admin created.</p><p>Username: <b>admin</b></p><p>Password: <b>SecureAdminPassword123!</b></p><p>Now tell me to remove this code for security!</p>")
-    except Exception as e:
-        return HttpResponse(f"Error: {e}")
-
 def logout_view(request):
     logout(request)
     messages.info(request, "You have successfully logged out.") 
