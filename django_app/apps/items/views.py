@@ -90,23 +90,3 @@ def index_view(request):
     items = Item.objects.exclude(status='RESOLVED').order_by('-created_at')[:12]
     return render(request, 'items/index.html', {'items': items})
 
-def seed_data_view(request):
-    """Temporary tool to seed categories and locations."""
-    from django.http import HttpResponse
-    if not request.user.is_superuser:
-        return HttpResponse("Unauthorized", status=401)
-        
-    categories = ['Electronics', 'Bags & Wallets', 'Keys', 'Documents', 'Clothing', 'Others']
-    locations = ['Main Lobby', 'Cafeteria', 'Library', 'Sports Complex', 'Boys Hostel', 'Girls Hostel', 'Academic Block']
-    
-    # Clear existing to avoid duplicates if user runs it multiple times
-    Category.objects.all().delete()
-    Location.objects.all().delete()
-    
-    for cat in categories:
-        Category.objects.get_or_create(name=cat)
-        
-    for loc in locations:
-        Location.objects.get_or_create(name=loc)
-        
-    return HttpResponse("<h1>Success!</h1><p>Categories and Locations have been seeded.</p><p>You can now go back and report items.</p>")
